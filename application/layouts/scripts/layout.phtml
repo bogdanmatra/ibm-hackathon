@@ -5,162 +5,77 @@
     <?php $this->user = Zend_Auth::getInstance()->getIdentity(); ?>
     <?php echo $this->headMeta()->appendHttpEquiv('Content-Type', 'text/html;charset=utf-8')?>
     <?php echo $this->headTitle() ?>
-    <?php echo $this->headLink()->appendStylesheet($fc->getBaseUrl().'/css/global.css')
-                                ->appendStylesheet($fc->getBaseUrl().'/css/screen_large.css')
+    <?php echo $this->headLink()->appendStylesheet($fc->getBaseUrl().'/css/normalize.css')
+                                ->appendStylesheet($fc->getBaseUrl().'/css/main.css')
                                 ->appendStylesheet($fc->getBaseUrl().'/css/jquery-ui.css')
-
-//                                ->appendStylesheet($fc->getBaseUrl().'/css/dataTables.colvis.jqueryui.css')
-//                                ->appendStylesheet($fc->getBaseUrl().'/css/dataTables.colVis.css')
-                                ->appendStylesheet($fc->getBaseUrl().'/css/dataTables.tableTools.css')
-                                ->appendStylesheet($fc->getBaseUrl().'/css/dataTables.css')
-                                ->appendStylesheet($fc->getBaseUrl().'/css/jquery.dropdown.css')?>
+                                ->appendStylesheet($fc->getBaseUrl().'/css/jquery-ui.theme.css')
+                                ->appendStylesheet($fc->getBaseUrl().'/css/bootstrap.css')
+                                ->appendStylesheet($fc->getBaseUrl().'/css/bootstrap-theme.css') ?>
     <?php echo $this->headStyle() ?>
     <?php echo $this->headScript()->appendFile($fc->getBaseUrl().'/js/jquery-1.11.1.js')
-//                                  ->appendFile($fc->getBaseUrl().'/js/jquery-ui.min.js')
                                   ->appendFile($fc->getBaseUrl().'/js/jquery-ui.js')
-                                  ->appendFile($fc->getBaseUrl().'/js/jquery.dataTables.js')//1.10.0
-//                                  ->appendFile($fc->getBaseUrl().'/js/dataTables.colVis.min.js')
-                                  ->appendFile($fc->getBaseUrl().'/js/dataTables.tableTools.min.js')
-                                  ->appendFile($fc->getBaseUrl().'/js/jquery.dataTables.columnFilter.js')
-                                  ->appendFile($fc->getBaseUrl().'/js/jquery.jeditable.js')
-                                  ->appendFile($fc->getBaseUrl().'/js/jquery.dataTables.editable.js')
-//                                  ->appendFile($fc->getBaseUrl().'/js/jquery-validate.min.js')
                                   ->appendFile($fc->getBaseUrl().'/js/latinise.js')
                                   ->appendFile($fc->getBaseUrl().'/js/application.js')
-                                  ->appendFile($fc->getBaseUrl().'/js/jquery.dropdown.min.js')
+                                  ->appendFile($fc->getBaseUrl().'/js/bootstrap.js')
                                   ->appendFile($fc->getBaseUrl().'/js/maskedInput.js')
-//                                  ->appendFile($fc->getBaseUrl().'/js/liveSearch.js')
-                                  ->appendScript('application.topMenu();', 'text/javascript')
-                                  ->appendScript('application.switchStore();', 'text/javascript')
-                                  ->appendScript('application.loading();', 'text/javascript')
-                                  ->appendScript('application.setActiveMenu();', 'text/javascript')
-                                  ->prependScript('activePath = "'.$this->activeMenu.'"')
-                                  ->appendScript('application.leftMenu();', 'text/javascript');?>
+                                  ->appendScript('application.topMenuRegister();', 'text/javascript')
+//                                  ->appendScript('application.switchStore();', 'text/javascript')
+//                                  ->appendScript('application.loading();', 'text/javascript')
+//                                  ->appendScript('application.setActiveMenu();', 'text/javascript')
+//                                  ->prependScript('activePath = "'.$this->activeMenu.'"')
+//                                  ->appendScript('application.leftMenu();', 'text/javascript');
+            ?>
 </head>
-<body>
-        <div id="top-menu">
-            <header>
-                <a class="logo" href="/index/main"></a>
-            </header>
-            <nav>
-                <a href="/invoice/orders">Orders</a>
-                <a href="/invoice/invoices">Invoices</a>
-                <a href="#">Ciresel</a>
-                <a href="/company/details">Company</a>
-            </nav>
-            <div id="user-settings">
-                <?php if ($this->user) { ?>
-<!--            script pentru verificarea existentei pozei memorate in bd
-                daca nu exista sau a fost pierduta poza din bd o furnizam pe cea default-->
-                <?php 
-                    if (file_exists(UPLOAD_PATH . '/' . $this->user->photo )) {
-                        $photo = '/'.$this->user->photo;
-                    } else {
-                        $photo = '/images/user/default.jpg';
-                    }
-                ?>
-                            <?php echo '<img id="profile" src="'.$photo.'">'?>
-                            <?php echo "<ul id='menu'><li><span><b>".$this->first_name."</b>"." ".$this->last_name."</span>"
-                                                 . "<em id='user-icon1' class='meniu-inactiv'></em></li>"
-                                                 . "<li><a href='#' class='user-link'>Edit Profile</a><em id='user-icon2' class='user-icons'></em></li>"
-                                                 . "<li><a href='/user/settings' class='user-link'>Settings</a><em id='user-icon3' class='user-icons'></em></li>"
-                                                 . "<li><a href='/index/logout' class='user-link'>Sign Out</a><em id='user-icon4' class='user-icons'></em></li>"
-                                                 . "</ul>"?>
-                            <br>
-                <?php } ?>
-            </div>
+    <body>
+        <div id="loginArea" style="width: 60%; float: right;">
+            <?php
+            if(isset($this->userData)){
+                
+            ?>
+            <p class="navbar-text navbar-right">
+                <a class="btn btn-danger pull-right" style="margin-right: 50px" href="/index/logout" role="button">
+                    Logout
+                </a>
+            </p>
+            <p class="navbar-text navbar-right" style="margin-right: 50px; padding: 7px">
+                Signed in as 
+                <!--<a href="user/details" class="navbar-link">-->
+                <a href="#" class="navbar-link">
+                    <?php 
+                        echo $this->userData->first_name.' '.$this->userData->last_name
+                    ?>
+                </a>
+            </p>
+            
+            <?php 
+            } else {
+                echo $this->formLogin;
+            } ?>
+        </div>
+        <ul class="nav nav-tabs">
+            <li role="presentation" class="active"><a href="/index/index">Home</a></li>
+            <li role="presentation" ><a href="/main/home">Active Routes</a></li>
+            <li role="presentation" ><a href="#">Hom3</a></li>
+            <li role="presentation" class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                Dropdown <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" role="menu">
+
+              </ul>
+            </li>
+        </ul>
+        
+        
+        <div id="mainContent" style="width: 100px; background-color: red; height: 100px;">
+            <?php echo $this->layout()->content ?> 
         </div>
         
-        <div id="container">
-            <div id="left-menu">
-                <div id="whitespace">
-                    <div class="currentStore"><span>Curent Store: </span></div>
-                    <form method="post" id="refreshStockForm" action="/store/requeststockupdate">
-                        <div class="selectStore">
-                            <select id="selectStore" name="selectStore">
-                                <?php foreach($this->currentStore as $key => $value){ ?>
-                                    <option value="<?php echo $key;?>" selected="selected"><?php echo $value;?></option>
-                                <?php } ?>
-                                <?php foreach($this->storeArray as $key => $value){ ?>
-                                    <option value="<?php echo $key;?>"><?php echo $value;?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                        <div class="currentStoreLogo">
-                            <?php if($this->storeLogo == null){
-                                $storeLogo = 'images/store/no_store_image.jpg';
-                            } else {
-                                $storeLogo = $this->storeLogo;
-                            }?>
-                            <img id="storeLogo" src="<?php echo '..'.'/'.$fc->getBaseUrl().$storeLogo ?>" alt="Store Logo" name="Store Logo">
-                        </div>
-                        <div class="refreshStore">
-                            <input type="submit" id="refreshStockButton" value="Refresh Stock" />
-                        </div>
-                        <span id="LastUpdateOfStocks">
-                            <?php echo 'Last Update: '.$this->storeLastUpdateInfo; ?>
-                        </span>
-                    </form>
-                </div>
-                <div id="subnav">
-                    <ul class="outer">
-                        <li class="subnav-item"><span id="icon1"></span><span class="text">Manage Store<em class="em-inactive"></em></span>
-                            <ul class="inside">
-                                <li class="insideItem"><a href="/store/view">View Existing Stores</a><em></em></li>
-                                <li class="insideItem"><a href="/store/new">Add new Store</a><em></em></li>
-                                <li class="insideItem"><a href="/store/stocks">Check Stocks</a><em></em></li>
-                            </ul>
-                        </li>
-                        <li class="subnav-item"><span id="icon1"></span>
-                            <span class="text">
-                                <a href="/invoice/queued">Invoices Queue</a><em class="em-inactive"></em>
-                            </span>
-                        </li>
-                        <li class="subnav-item"><span id="icon1"></span>
-                            <span class="text">
-                                <a href="/print/print">Printing</a><em class="em-inactive"></em>
-                            </span>
-                        </li>
-                        <li class="subnav-item"><span id="icon1"></span>
-                            <span class="text">
-                                <a href="/vat/settings">VAT Settings</a><em class="em-inactive"></em>
-                            </span>
-                        </li>
-                        <li class="subnav-item"><span id="icon1"></span><span class="text">Categorie4<em class="em-inactive"></em></span>
-                            <ul class="inside">
-                                <li><a href="#">Fringilla Condimentum</a><em></em></li>
-                                <li><a href="#">Lorem</a><em></em></li>
-                            </ul>
-                        </li>
-                        
-                        <li class="subnav-item"><span id="icon1"></span><span class="text"><a href="#">Categorie6</a><em class="em-inactive"></em></span></li>
-                        <li class="subnav-item"><span id="icon1"></span><span class="text"><a href="/test/test">Test</a><em class="em-inactive"></em></span></li>
-                    </ul>
-                </div>
-            </div>
-        
-          <div id="breadcrumbs">
-                <?php 
-//                    echo $this->navigation()->breadcrumbs()->setLinkLast(false)->setMinDepth(0)->render();
-                ?>   
-            </div>
-            <div id="mainContent" style="float: left;">
-                <?php echo $this->layout()->content ?>
-            </div>
-        </div>
     </body>
-    
-<body>
-    
-    <?php // echo $this->translate('1'); ?>
-    
-</body>
-
-<div id="boxes">
-    <div id="dialog1" class="window">
-        <img src="../images/app/loading.gif"/>
-    </div>
-    <div id="mask"></div>
-</div>
-
 </html>
+
+<div id="dialogRegister" title="Register" style="margin:0px; padding:0px; overflow:hidden">
+    <?php 
+        echo $this->formRegister;
+    ?>
+</div>

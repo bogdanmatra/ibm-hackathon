@@ -8,3 +8,159 @@ and open the template in the editor.
     Author     : Stefan Iacob
 */
 
+#msform{
+    padding: 7px;
+}
+
+#dialogRegister{
+    width: 600px !important;
+    height: 800px !important;
+    margin-bottom: 10px;
+}
+
+#registerFormContainer{
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    width: 600px !important;
+    height: 800px !important;
+    background: #FBF8F9 url("../images/app/bg_repeat.png") repeat;
+}
+
+#titleProductDetails{
+    color: #C43F40;
+    line-height: 2em;
+    font-size: 2em;
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+#productInfo > label{
+    color:#C43F40;
+    float:left;
+    font-size:0.8em;
+    font-weight:bold;
+    margin-top:20px;
+    padding-left:3%;
+    width:calc(25% - 50px);
+}
+
+#productInfo > label[for="productName"]{
+    margin-top: 0px !important;
+}
+
+form[id="productInfo"] > textarea{
+    width: 88%;
+    margin-left: 3%;
+    float:left;
+    resize: none;
+    margin-top: 5px;
+    background: transparent;
+    border: 1px solid rgba(204, 204, 204, 0.1);
+    background-color:rgba(204, 204, 204, 0.1);
+    outline: none;
+    color: #C43F40;
+    padding-right: 40px;
+}
+form[id="productInfo"] > input[type="text"]{
+    width: 88%;
+    margin-left: 3%;
+    float:left;
+    margin-top: 5px;
+    background: transparent;
+    border: 1px solid rgba(204, 204, 204, 0.1);
+    color: #C43F40;
+    background-color:rgba(204, 204, 204, 0.1);
+    outline: none;
+    padding-right: 40px;
+}
+
+form[id="productInfo"] > input[type="text"]:focus, form[id="productInfo"] > textarea:focus{
+    cursor: default !important;
+    background-image: url('../images/app/creion_rosu_mare.png') !important;
+    background-position:97.5% 50%;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+}
+
+form[id="productInfo"] > input[type="text"]:hover, form[id="productInfo"] > textarea:hover{
+    cursor: pointer !important;
+    background-image: url('../images/app/creion_gri_mare.png');
+    background-position:97.5% 50%;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+}
+
+.dateSpecialPrice{
+    width: 25% !important;
+    margin-top: 20px !important;
+}
+
+label[for="specialPriceFrom"], label[for="specialPriceTo"]{
+    width: 5% !important;
+    padding-right: 2px;
+    margin-left: calc(10% - 50px) !important;
+}
+
+/*product status checkbox*/
+#activeProductCheckbox{
+    width: 25%;
+    height: 35px;
+    float: left;
+    margin-left: 50px;
+    margin-top: 50px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+#activeProductCheckbox{
+    height: 40px !important;
+}
+
+
+#activeProductCheckbox input[type="checkbox"]{
+    display: none;
+}
+
+#activeProductCheckbox input[type="checkbox"] + em{
+    background-image: url('../images/app/check_off.png');
+    background-position:top left;
+    background-repeat: no-repeat;
+}
+
+#activeProductCheckbox input[type="checkbox"]:checked + em{
+    background-image: url('../images/app/check.png');
+    background-position:top left;
+    background-repeat: no-repeat;
+ 
+}
+
+#activeProductCheckbox em{
+    padding-left: 30px;
+    border:none;
+    color:#c43f40;
+    float:left;
+    font-size:1em;
+    font-weight:bold;
+    line-height:1.4em;
+    width:100%;
+    outline: none;
+    font-style: normal;
+}
+
+
+/*end of product info dialog*/
+#submitProductSettings{
+    background-color:#C43F40;
+    border:none !important;
+    color:white;
+    cursor:default;
+    float:right;
+    font-size:1.1em;
+    font-weight:bold;
+    height:40px;
+    margin-top:43px;
+    margin-right: 50px;
+    width:250px;
+}
