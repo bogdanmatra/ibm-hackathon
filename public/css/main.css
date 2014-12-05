@@ -9,62 +9,44 @@ and open the template in the editor.
 */
 
 #msform{
-    padding: 7px;
+    padding: 4px;
+}
+
+#loginArea > p[class*="navbar-text"]{
+    margin: 3px;
 }
 
 #dialogRegister{
-    width: 600px !important;
-    height: 800px !important;
+    width: 400px !important;
     margin-bottom: 10px;
 }
 
-#registerFormContainer{
+#registerInfo{
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-    width: 600px !important;
-    height: 800px !important;
-    background: #FBF8F9 url("../images/app/bg_repeat.png") repeat;
+    width: 100%;
+    height: 100%;
+    background: #FFF;
 }
 
-#titleProductDetails{
-    color: #C43F40;
-    line-height: 2em;
-    font-size: 2em;
-    text-align: center;
-    padding-bottom: 20px;
-}
-
-#productInfo > label{
+#registerInfo > label{
     color:#C43F40;
     float:left;
     font-size:0.8em;
     font-weight:bold;
-    margin-top:20px;
+    margin-top:5px;
     padding-left:3%;
-    width:calc(25% - 50px);
+    width:calc(90%);
 }
 
-#productInfo > label[for="productName"]{
-    margin-top: 0px !important;
+#registerInfo > label[for="firstName"]{
+    margin-top: 25px !important;
 }
 
-form[id="productInfo"] > textarea{
-    width: 88%;
+form[id="registerInfo"] > input[type="text"], form[id="registerInfo"] > input[type="password"]{
+    width: 94%;
     margin-left: 3%;
     float:left;
-    resize: none;
-    margin-top: 5px;
-    background: transparent;
-    border: 1px solid rgba(204, 204, 204, 0.1);
-    background-color:rgba(204, 204, 204, 0.1);
-    outline: none;
-    color: #C43F40;
-    padding-right: 40px;
-}
-form[id="productInfo"] > input[type="text"]{
-    width: 88%;
-    margin-left: 3%;
-    float:left;
-    margin-top: 5px;
+    margin-top: 1px;
     background: transparent;
     border: 1px solid rgba(204, 204, 204, 0.1);
     color: #C43F40;
@@ -73,7 +55,7 @@ form[id="productInfo"] > input[type="text"]{
     padding-right: 40px;
 }
 
-form[id="productInfo"] > input[type="text"]:focus, form[id="productInfo"] > textarea:focus{
+form[id="registerInfo"] > input[type="text"]:focus, form[id="registerInfo"] > input[type="password"]:focus{
     cursor: default !important;
     background-image: url('../images/app/creion_rosu_mare.png') !important;
     background-position:97.5% 50%;
@@ -81,7 +63,7 @@ form[id="productInfo"] > input[type="text"]:focus, form[id="productInfo"] > text
     background-size: 20px 20px;
 }
 
-form[id="productInfo"] > input[type="text"]:hover, form[id="productInfo"] > textarea:hover{
+form[id="registerInfo"] > input[type="text"]:hover, form[id="registerInfo"] > input[type="password"]:hover{
     cursor: pointer !important;
     background-image: url('../images/app/creion_gri_mare.png');
     background-position:97.5% 50%;
@@ -89,24 +71,13 @@ form[id="productInfo"] > input[type="text"]:hover, form[id="productInfo"] > text
     background-size: 20px 20px;
 }
 
-.dateSpecialPrice{
-    width: 25% !important;
-    margin-top: 20px !important;
-}
-
-label[for="specialPriceFrom"], label[for="specialPriceTo"]{
-    width: 5% !important;
-    padding-right: 2px;
-    margin-left: calc(10% - 50px) !important;
-}
-
-/*product status checkbox*/
-#activeProductCheckbox{
-    width: 25%;
+/*driver checkbox*/
+#driverCheckBox{
+    width: 100%;
     height: 35px;
     float: left;
-    margin-left: 50px;
-    margin-top: 50px;
+    margin-left: 3%;
+    margin-top: 25px;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -114,29 +85,29 @@ label[for="specialPriceFrom"], label[for="specialPriceTo"]{
     -ms-user-select: none;
 }
 
-#activeProductCheckbox{
+#driverCheckBox{
     height: 40px !important;
 }
 
 
-#activeProductCheckbox input[type="checkbox"]{
+#driverCheckBox input[type="checkbox"]{
     display: none;
 }
 
-#activeProductCheckbox input[type="checkbox"] + em{
+#driverCheckBox input[type="checkbox"] + em{
     background-image: url('../images/app/check_off.png');
     background-position:top left;
     background-repeat: no-repeat;
 }
 
-#activeProductCheckbox input[type="checkbox"]:checked + em{
+#driverCheckBox input[type="checkbox"]:checked + em{
     background-image: url('../images/app/check.png');
     background-position:top left;
     background-repeat: no-repeat;
  
 }
 
-#activeProductCheckbox em{
+#driverCheckBox em{
     padding-left: 30px;
     border:none;
     color:#c43f40;
@@ -150,17 +121,8 @@ label[for="specialPriceFrom"], label[for="specialPriceTo"]{
 }
 
 
-/*end of product info dialog*/
-#submitProductSettings{
-    background-color:#C43F40;
-    border:none !important;
-    color:white;
-    cursor:default;
-    float:right;
-    font-size:1.1em;
-    font-weight:bold;
-    height:40px;
-    margin-top:43px;
-    margin-right: 50px;
-    width:250px;
+/*end of registration info dialog*/
+#submitUser{
+    margin-right: 20px;
+    margin-top: 20px;
 }
