@@ -79,7 +79,6 @@ class IndexController extends Zend_Controller_Action
                 $formDataForValidation["$name"] = $dataArray['value']; 
                 
             }
-            var_dump($formDataForValidation);
             if($formDataForValidation['driverCheck'] === "1"){
                 $carModel = $registerForm->getElement('carModel');
                 $carModel->setRequired(true)->addErrorMessage('Required');

@@ -52,18 +52,11 @@ class Application_Form_Login extends Zend_Form
         $register->setLabel('Register');
         $register->setAttrib('class', 'btn btn-warning');
         
-//        $token = new Zend_Form_Element_Hash('token');
-//        $token->setSalt(md5(uniqid(rand(), true)));
-        
         $this->addElements(array($email, $password, $submit, $register, $link));
 
         $this->setElementDecorators(array(
             'ViewHelper'
         ));
-        
-//        $token->setDecorators(array(
-//            'ViewHelper'
-//        ));
         
         $submit->setDecorators(array(
             'ViewHelper'
