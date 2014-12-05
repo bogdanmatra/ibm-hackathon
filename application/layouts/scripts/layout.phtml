@@ -20,11 +20,8 @@
                                   ->appendFile($fc->getBaseUrl().'/js/maskedInput.js')
                                   ->appendScript('application.topMenuRegister();', 'text/javascript')
                                   ->appendScript('application.registerFormSubmit();', 'text/javascript')
-//                                  ->appendScript('application.loading();', 'text/javascript')
-//                                  ->appendScript('application.setActiveMenu();', 'text/javascript')
-//                                  ->prependScript('activePath = "'.$this->activeMenu.'"')
-//                                  ->appendScript('application.leftMenu();', 'text/javascript');
-            ?>
+                                  ->appendScript('application.setActiveMenu();', 'text/javascript')
+                                  ->prependScript('activeMenu = "'.$this->activeMenu.'"'); ?>
 </head>
     <body>
         <div id="loginArea" style="width: 60%; float: right;">
@@ -55,7 +52,7 @@
         <ul class="nav nav-tabs">
             <li role="presentation" class="active"><a href="/main/home">Home</a></li>
             <li role="presentation" ><a href="/main/active">Active Routes</a></li>
-            <li role="presentation" ><a href="#">Hom3</a></li>
+            <li role="presentation" ><a href="/main/new">New Route</a></li>
             <li role="presentation" class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
                 Dropdown <span class="caret"></span>

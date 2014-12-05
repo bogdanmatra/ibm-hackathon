@@ -22,7 +22,7 @@ var application = {
         $('#dialogRegister').dialog({
             autoOpen: false, 
             width: 400,
-            height: 600,
+            height: 615,
             closeOnEscape: true,
             beforeclose: function (event, ui) { event.stopPropagation(); return false; },
             close: function (event, ui){
@@ -94,6 +94,19 @@ var application = {
             return false;
         });
     });
+  },
+  setActiveMenu : function (){
+    $(document).ready(function(){
+        console.log(activeMenu);
+        $('.nav').children('li[class!="dropdown"]').each(function(){
+            $(this).removeClass('active');
+            if($(this).children('a').attr('href') === '/'+activeMenu){
+                $(this).addClass('active');
+            }
+            
+        });
+    });
+      
   }
 };
 

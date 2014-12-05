@@ -38,6 +38,16 @@ class Application_Form_Registration extends Zend_Form {
         $lastName->setRequired(true)->addErrorMessage('Required Field');
         $lastName->addValidator('Regex', true, array('/^[a-zA-Z0-9.,:-\s]*$/'))->addErrorMessage('Invalid characters used');
         
+        $telephone = new Zend_Form_Element_Text('telephone');
+        $telephone->setAttrib('autocomplete', 'off');
+        $telephone->setAttrib('maxlength', '15');
+        $telephone->setLabel('Telephone'.'*');
+        $telephone->addFilter('StripTags');
+        $telephone->addFilter('HtmlEntities');
+        $telephone->addFilter('StringTrim');
+        $telephone->setRequired(true)->addErrorMessage('Required Field');
+        $telephone->addValidator('Regex', true, array('/^[0-9.+\s]*$/'))->addErrorMessage('Invalid characters used');
+        
         $email = new Zend_Form_Element_Text('emailRegister');
         $email->setAttrib('autocomplete', 'off');
         $email->setLabel('Email'.'*');
@@ -90,7 +100,7 @@ class Application_Form_Registration extends Zend_Form {
         $driverLicense->addValidator('Regex', true, array('/^[0-9.\s]*$/'))->addErrorMessage('Invalid characters used');
         
         
-        $this->addElements(array($firstName, $lastName, $email, $password, $driverCheck,
+        $this->addElements(array($firstName, $lastName, $telephone, $email, $password, $driverCheck,
             $carModel, $carMake, $driverLicense));
         
         $this->setElementDecorators(array(

@@ -79,7 +79,7 @@ class IndexController extends Zend_Controller_Action
                 $formDataForValidation["$name"] = $dataArray['value']; 
                 
             }
-            
+            var_dump($formDataForValidation);
             if($formDataForValidation['driverCheck'] === "1"){
                 $carModel = $registerForm->getElement('carModel');
                 $carModel->setRequired(true)->addErrorMessage('Required');
@@ -98,7 +98,8 @@ class IndexController extends Zend_Controller_Action
                     'password' => $formDataForValidation['passwordRegister'],
                     'last_name' => $formDataForValidation['lastName'],
                     'first_name' => $formDataForValidation['firstName'],
-                    'driver_flag' => $formDataForValidation['driverCheck']
+                    'driver_flag' => $formDataForValidation['driverCheck'],
+                    'telephone' => $formDataForValidation['telephone']
                 );
                 
                 try {

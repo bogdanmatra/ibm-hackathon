@@ -9,7 +9,7 @@ and open the template in the editor.
 */
 
 #msform{
-    padding: 7px;
+    padding: 4px;
 }
 
 #loginArea > p[class*="navbar-text"]{
@@ -28,15 +28,6 @@ and open the template in the editor.
     background: #FFF;
 }
 
-/*#titleProductDetails{
-    color: #C43F40;
-    line-height: 2em;
-    font-size: 2em;
-    text-align: center;
-    padding-bottom: 20px;
-}*/
-
-
 #registerInfo > label{
     color:#C43F40;
     float:left;
@@ -51,24 +42,11 @@ and open the template in the editor.
     margin-top: 25px !important;
 }
 
-/*form[id="registerInfo"] > textarea{
-    width: 88%;
-    margin-left: 3%;
-    float:left;
-    resize: none;
-    margin-top: 5px;
-    background: transparent;
-    border: 1px solid rgba(204, 204, 204, 0.1);
-    background-color:rgba(204, 204, 204, 0.1);
-    outline: none;
-    color: #C43F40;
-    padding-right: 40px;
-}*/
 form[id="registerInfo"] > input[type="text"], form[id="registerInfo"] > input[type="password"]{
     width: 94%;
     margin-left: 3%;
     float:left;
-    margin-top: 5px;
+    margin-top: 1px;
     background: transparent;
     border: 1px solid rgba(204, 204, 204, 0.1);
     color: #C43F40;
@@ -93,18 +71,7 @@ form[id="registerInfo"] > input[type="text"]:hover, form[id="registerInfo"] > in
     background-size: 20px 20px;
 }
 
-/*.dateSpecialPrice{
-    width: 25% !important;
-    margin-top: 20px !important;
-}
-
-label[for="specialPriceFrom"], label[for="specialPriceTo"]{
-    width: 5% !important;
-    padding-right: 2px;
-    margin-left: calc(10% - 50px) !important;
-}*/
-
-/*product status checkbox*/
+/*driver checkbox*/
 #driverCheckBox{
     width: 100%;
     height: 35px;
@@ -154,7 +121,7 @@ label[for="specialPriceFrom"], label[for="specialPriceTo"]{
 }
 
 
-/*end of product info dialog*/
+/*end of registration info dialog*/
 #submitUser{
     margin-right: 20px;
     margin-top: 20px;
