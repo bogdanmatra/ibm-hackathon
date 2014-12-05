@@ -19,7 +19,7 @@
                                   ->appendFile($fc->getBaseUrl().'/js/bootstrap.js')
                                   ->appendFile($fc->getBaseUrl().'/js/maskedInput.js')
                                   ->appendScript('application.topMenuRegister();', 'text/javascript')
-//                                  ->appendScript('application.switchStore();', 'text/javascript')
+                                  ->appendScript('application.registerFormSubmit();', 'text/javascript')
 //                                  ->appendScript('application.loading();', 'text/javascript')
 //                                  ->appendScript('application.setActiveMenu();', 'text/javascript')
 //                                  ->prependScript('activePath = "'.$this->activeMenu.'"')
@@ -53,8 +53,8 @@
             } ?>
         </div>
         <ul class="nav nav-tabs">
-            <li role="presentation" class="active"><a href="/index/index">Home</a></li>
-            <li role="presentation" ><a href="/main/home">Active Routes</a></li>
+            <li role="presentation" class="active"><a href="/main/home">Home</a></li>
+            <li role="presentation" ><a href="/main/active">Active Routes</a></li>
             <li role="presentation" ><a href="#">Hom3</a></li>
             <li role="presentation" class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
@@ -74,8 +74,13 @@
     </body>
 </html>
 
+
 <div id="dialogRegister" title="Register" style="margin:0px; padding:0px; overflow:hidden">
     <?php 
         echo $this->formRegister;
     ?>
+</div>
+
+<div id="successInfo" title="Success!" style="margin:0px; padding:0px; overflow:hidden">
+    <p>You have successfully registered!</p>
 </div>

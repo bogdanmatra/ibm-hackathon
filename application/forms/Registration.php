@@ -38,15 +38,24 @@ class Application_Form_Registration extends Zend_Form {
         $lastName->setRequired(true)->addErrorMessage('Required Field');
         $lastName->addValidator('Regex', true, array('/^[a-zA-Z0-9.,:-\s]*$/'))->addErrorMessage('Invalid characters used');
         
-        $email = new Zend_Form_Element_Text('email');
+        $email = new Zend_Form_Element_Text('emailRegister');
         $email->setAttrib('autocomplete', 'off');
         $email->setLabel('Email'.'*');
         $email->addFilter('StripTags');
         $email->addFilter('HtmlEntities');
         $email->addFilter('StringTrim');
-        $email->setRequired(true)->addErrorMessage('Username Required');
+        $email->setRequired(true)->addErrorMessage('Required');
         $email->addValidator('EmailAddress')->addErrorMessage('Invalid Email used');
         $email->addValidator('StringLength', true, array(0, 255))->addErrorMessage('Required Field');
+        
+        $password = new Zend_Form_Element_Password('passwordRegister');
+        $password->setAttrib('autocomplete', 'off');
+        $password->setLabel('Password*');
+        $password->addFilter('StripTags');
+        $password->addFilter('HtmlEntities');
+        $password->addFilter('StringTrim');
+        $password->setRequired(true)->addErrorMessage('Password Required');
+        $password->addValidator('StringLength', true, array(0, 255))->addErrorMessage('Required Field');
         
         $driverCheck = new Zend_Form_Element_Checkbox('driverCheck');
         $driverCheck->setDescription('Driver');
@@ -81,7 +90,7 @@ class Application_Form_Registration extends Zend_Form {
         $driverLicense->addValidator('Regex', true, array('/^[0-9.\s]*$/'))->addErrorMessage('Invalid characters used');
         
         
-        $this->addElements(array($firstName, $lastName, $email, $driverCheck,
+        $this->addElements(array($firstName, $lastName, $email, $password, $driverCheck,
             $carModel, $carMake, $driverLicense));
         
         $this->setElementDecorators(array(
@@ -101,12 +110,13 @@ class Application_Form_Registration extends Zend_Form {
             array('Description', array('placement' => Zend_Form_Decorator_Abstract::APPEND, 
                                        'tag' => 'em', 
                                        'class' => 'activeCheck')),
-            array('HtmlTag', array('tag' => 'div', 'id' => 'activeProductCheckbox'))
+            array('HtmlTag', array('tag' => 'div', 'id' => 'driverCheckBox'))
         ));
         
         $submit = new Zend_Form_Element_Submit('submit');
-        $submit->setLabel('Update Product');
-        $submit->setAttrib('id', 'submitProductSettings');
+        $submit->setLabel('Register');
+        $submit->setAttrib('class', 'btn btn-success pull-right');
+        $submit->setAttrib('id', 'submitUser');
         
         $this->addElement($submit);
         

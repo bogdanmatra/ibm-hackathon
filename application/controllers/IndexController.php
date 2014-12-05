@@ -25,7 +25,6 @@ class IndexController extends Zend_Controller_Action
         $this->_helper->viewRenderer->setNoRender();
         
        $formLogin = new Application_Form_Login();
-//       $this->view->form = $formLogin;
        
        if ($this->getRequest()->isPost() && $formLogin->isValid($this->_request->getPost())) {
             $user = $this->_request->getPost('email');
@@ -52,7 +51,7 @@ class IndexController extends Zend_Controller_Action
                 $this->view->errorMessages = "Username and/or Password are incorrect";  
             }
         } else {
-            $this->redirect('/index/index');
+            $this->redirect('/main/home');
         } 
 //        }
     } 
@@ -64,77 +63,74 @@ class IndexController extends Zend_Controller_Action
     
 //author Stefan Iacob
 //function to register the new user in our application
-//also creates the secondary db used by each user
-//the registration of the user is made as a multiple insert and create db&tables within a mysql transaction
     
     public function registerAction(){
-        
         $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
         
-        $layout = Zend_Layout::getMvcInstance();
-        $layout->setLayoutPath(APPLICATION_PATH . '/layouts/scripts');
-        $layout->setLayout('alternate');
-        
-        $form = new Application_Form_Registration();
-        $this->view->form = $form;
-        
-        $owner = new Application_Model_Owner();
-        $details = new Application_Model_Details();
-//        $account = new Application_Model_Account();
         $db = Zend_Db_Table::getDefaultAdapter();
+        $users = new Application_Model_Users();
         
-        if ($this->getRequest()->isPost() && $form->isValid($this->_request->getPost())) {
-            //luam datele din fiecare din cele 4 subform-uri ale formularului de inregistrare
-            $step1 = $this->_request->getPost("step1");
-            $step2 = $this->_request->getPost("step2");
-
-            $lang = Zend_Registry::get('Zend_Lang'); 
-            $db_name = 'inco_dashboard_'.$step1['username'];
-
-            $owner_data = array(
-                'local_id' => null,
-                'email' => $step1['email'],
-                'username' => $step1['username'],
-                'password' => $step1['password'],
-                'photo' => 'images/user/default.jpg',
-                'privilage' => 'ADMINISTRATOR',
-                'lang' => $lang,
-                'db_name' => $db_name
-            );
-            $db->insert($owner->getTableName(), $owner_data);
-            $owner_id = $db->lastInsertId($owner->getTableName(), 'local_id');
-            $details_data = array(
-                'local_id' => null,
-                'owner_id' => $owner_id,
-                'last_name' => $step2['familyName'],
-                'first_name' => $step2['givenName']
-            );
-
-            $sql = 'CREATE DATABASE '.$db_name;
-            $sql2 = "CREATE TABLE `$db_name`.`store` (
-                    `local_id` int(11) unsigned NOT NULL auto_increment,
-                    `owner_id` int(11) unsigned NOT NULL,
-                    `store_name` varchar(255) NOT NULL,
-                    `store_logo` varchar(255) NOT NULL,
-                    `store_url` varchar(255) NOT NULL,
-                    PRIMARY KEY  (`local_id`)
-                  )";
-
-            $db->beginTransaction();
-            try{
-                $db->insert($details->getTableName(), $details_data);
-                $db->query($sql);
-                $db->query($sql2);
-                $db->commit();
-            } catch (Exception $e) {
-                $db->rollBack();
-                $this->view->errorMessages = "There was a problem with your registration: " . $e->getMessage() . "\n";
+        $registerForm = new Application_Form_Registration();
+        
+        if($this->_request->isPost()){
+            foreach($this->_request->getPost('dataPost') as $dataArray){
+                $name = $dataArray['name'];
+                $formDataForValidation["$name"] = $dataArray['value']; 
+                
             }
-           $this->redirect('/');
-        } else {
-            $logger = Zend_Registry::get('logger');
-            $logger->log('Register Action: '.$e, Zend_Log::ERR); 
-        } 
+            
+            if($formDataForValidation['driverCheck'] === "1"){
+                $carModel = $registerForm->getElement('carModel');
+                $carModel->setRequired(true)->addErrorMessage('Required');
+                
+                $carMake = $registerForm->getElement('carMake');
+                $carMake->setRequired(true)->addErrorMessage('Required');
+                
+                $driverLicense = $registerForm->getElement('driverLicense');
+                $driverLicense->setRequired(true)->addErrorMessage('Required');
+            }
+            if($registerForm->isValid($formDataForValidation)){
+                
+                $userDataInsert = array(
+                    'id' => null,
+                    'email' => $formDataForValidation['emailRegister'],
+                    'password' => $formDataForValidation['passwordRegister'],
+                    'last_name' => $formDataForValidation['lastName'],
+                    'first_name' => $formDataForValidation['firstName'],
+                    'driver_flag' => $formDataForValidation['driverCheck']
+                );
+                
+                try {
+                    $db->insert($users->getTableName(), $userDataInsert);
+                    $last_id = $users->getAdapter()->lastInsertId();
+                } catch (Zend_Exception $e) {
+                    $this->redirect('/error/error');
+                }
+                
+                if($formDataForValidation['driverCheck']){ //if the user is a driver => need to update driver data
+                    $driver = new Application_Model_Driver();
+                    $driverDataInsert = array(
+                        'id' => null,
+                        'user_id' => $last_id,
+                        'make' => $formDataForValidation['carMake'],
+                        'model' => $formDataForValidation['carModel'],
+                        'license' => $formDataForValidation['driverLicense'],
+                        'completed' => 0
+                    );
+                    try {
+                        $db->insert($driver->getTableName(), $driverDataInsert);
+                    } catch (Zend_Exception $e) {
+                        $this->redirect('/error/error');
+                    }
+                }
+                $this->_helper->json(0);
+            } else {
+                $errorMessages = $registerForm->getMessages();
+                $this->_helper->json($errorMessages);
+            }
+            
+        }
     }
     
     
@@ -142,7 +138,7 @@ class IndexController extends Zend_Controller_Action
 
     public function logoutAction(){
         Zend_Session::destroy(true);
-        $this->redirect('/index/index');
+        $this->redirect('/main/home');
     }
        
 }

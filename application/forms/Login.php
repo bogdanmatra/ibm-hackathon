@@ -16,19 +16,10 @@ class Application_Form_Login extends Zend_Form
 {
     public function init()
     {
-        
-//        $translate = Zend_Registry::get('Zend_Translate');
-//        echo $translate->translate("1");
- 
         $this->setMethod('post');
         $this->setAction('/index/login');
         $this->setAttrib('id', 'msform');
-        
-//        $note = new Zend_Form_Element_Note(
-//            'title',
-//            array('value' => '<h2 id="small-title">Welcome to</h2><p id="large-title">Invoices.Guru !</p>')
-//        );
-        
+     
         $email = new Zend_Form_Element_Text('email');
         $email->setAttrib('placeholder', 'E-mail');
         $email->setAttrib('autocomplete', 'off');
@@ -55,23 +46,24 @@ class Application_Form_Login extends Zend_Form
 
         $submit = new Zend_Form_Element_Submit('SignIn');
         $submit->setLabel('Sign In');
-        $submit->setAttrib('class', 'submit action-button');
+        $submit->setAttrib('class', 'btn btn-info');
         
         $register = new Zend_Form_Element_Button('register');
         $register->setLabel('Register');
+        $register->setAttrib('class', 'btn btn-warning');
         
-        $token = new Zend_Form_Element_Hash('token');
-        $token->setSalt(md5(uniqid(rand(), true)));
+//        $token = new Zend_Form_Element_Hash('token');
+//        $token->setSalt(md5(uniqid(rand(), true)));
         
-        $this->addElements(array($email, $password, $link, $submit, $register, $token));
+        $this->addElements(array($email, $password, $submit, $register, $link));
 
         $this->setElementDecorators(array(
             'ViewHelper'
         ));
         
-        $token->setDecorators(array(
-            'ViewHelper'
-        ));
+//        $token->setDecorators(array(
+//            'ViewHelper'
+//        ));
         
         $submit->setDecorators(array(
             'ViewHelper'
@@ -85,23 +77,5 @@ class Application_Form_Login extends Zend_Form
             'FormElements',
             'Form'
         ));
-        
-//        $icon = new Zend_Form_Element_Note(
-//            'icon',
-//            array('value' => '<div class="icon"><img src="../images/app/ornament.png" class="form-icon" /><div>')
-//        );
-//        $this->addElements(array($icon));
-//        $icon->setDecorators(array(
-//            'ViewHelper',
-//        ));
-        
-//        $account = new Zend_Form_Element_Note(
-//            'account',
-//            array('value' => '<div id="account"><a href=# class="need_account">Need an account?</a><div>')
-//        );
-//        $this->addElements(array($account));
-//        $account->setDecorators(array(
-//            'ViewHelper',
-//        ));
     }
 }
