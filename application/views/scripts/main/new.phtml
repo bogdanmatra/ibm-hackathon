@@ -171,18 +171,64 @@ function codeAddress() {
     if (status == google.maps.GeocoderStatus.OK) {
       map.setCenter(results[0].geometry.location);
       doIt.value = results[0].formatted_address;
-      var marker = new google.maps.Marker({
-          map: map,
-          position: results[0].geometry.location
-      });
     } else {
       alert('Geocode was not successful for the following reason: ' + status);
     }
   });
 }
 
+
+function codeLatLng(lat, lng) {
+
+    var latlng = new google.maps.LatLng(lat, lng);
+    geocoder.geocode({'latLng': latlng}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+      console.log(results)
+        if (results[1]) {
+
+             for (var i=0; i<results[0].address_components.length; i++) {
+            for (var b=0;b<results[0].address_components[i].types.length;b++) {
+
+            //there are different types that might hold a city admin_area_lvl_1 usually does in come cases looking for sublocality type will be more appropriate
+                if (results[0].address_components[i].types[b] == "administrative_area_level_1") {
+                    //this is the object you are looking for
+                    city= results[0].address_components[i];
+                    break;
+                }
+            }
+        }
+        //city data
+
+        var address = document.getElementById('start');
+        address.value = city.long_name;
+
+
+        } else {
+          alert("No results found");
+        }
+      } else {
+        alert("Geocoder failed due to: " + status);
+      }
+    });
+  }
+
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else { 
+        x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+
+function showPosition(position) {
+    codeLatLng( position.coords.latitude,position.coords.longitude);
+}
+
+
 google.maps.event.addDomListener(window, 'load', initialize);
-//$("#mainContent").css("width","60%").css("float", "right");
+
+getLocation();
     </script>
   
 
@@ -193,10 +239,10 @@ google.maps.event.addDomListener(window, 'load', initialize);
         <!-- <input id="address" type="textbox" value="Sydney, NSW">
       <input type="button" value="Geocode" onchange="codeAddress()">
     <b>Start: </b> -->
-    <input type="text" id="start" value="Drumul Taberei 106, Bucharest" onchange="codeAddress(this)">
+    <input type="text" id="start" value="" onchange="codeAddress(this)">
    
     <b>End: </b>
-    <input type="text" id="end" value="Iași, Strada Străpungere Silvestru, Județul Iași" onchange="codeAddress(this)">
+    <input type="text" id="end" value="" onchange="codeAddress(this)">
     <input type="button" value="Geocode" onclick="calcRoute()">
     </div>
     <div id="map-canvas" style="width: 60%; float: right;"></div>
