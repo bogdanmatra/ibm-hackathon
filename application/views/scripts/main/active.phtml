@@ -99,7 +99,7 @@ function ajaxRequest(){
                 <?php 
                     if(!$this->userId){ ?> myVar="disabled"; <?php }
                 ?>
-    var out =  "<div class='jumbotron'><p>From:  "+val.start+"<div class='pull-right'>Passengers remaining: "+val.passenger+"</div>"+"</p><p>To: "+val.finish+"</p><p> Date: "+val.date+"</p><p> Telephone: "+val.telephone+"</p><p> Name : "+val.first_name+" " +val.last_name+"</p><p>\n\
+    var out =  "<div class='jumbotron' style='text-transform: capitalize;'><p>From:  "+val.start+"<div class='pull-right'><p style='font-weight:bolder'>Seats available: <span>"+val.passenger+"</span></p></div>"+"</p><p>To: "+val.finish+"</p><p> Date: "+val.date+"</p><p> Telephone: "+val.telephone+"</p><p> Name : "+val.first_name+" " +val.last_name+"</p><p>\n\
 <button class='btn btn-primary btn-lg asignPass' data-id='"+val.route_id+"' data-pass='"+val.passenger+"' role='button'"+ myVar +">Let\'s Carpool!</button>\n\
 </p> <img src='../images/app/car.jpg' alt='first' style='max-width: 150px; max-height: 150px;margin-top: -165px;' class='pull-right'></div>";
     $("#mustdelete").append(out);
