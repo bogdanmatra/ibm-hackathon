@@ -49,12 +49,10 @@ class MainController extends Zend_Controller_Action
             $query->where($routes->getTableName().".status = ?", "In Progress");
             
             if(strlen($this->_request->getPost('from')) > 0){
-                $query->where($routes->getTableName().".start LIKE ?", "%".$this->_request->getPost('from')."%");
-                $query->orWhere($routes->getTableName().".intermediate LIKE ?", "%".$this->_request->getPost('from')."%");
+                $query->where($routes->getTableName().".intermediate LIKE ?", "%".$this->_request->getPost('from')."%");
             }
             if(strlen($this->_request->getPost('to')) > 0){
-                $query->where($routes->getTableName().".finish LIKE ?", "%".$this->_request->getPost('to')."%");
-                $query->orWhere($routes->getTableName().".intermediate LIKE ?", "%".$this->_request->getPost('to')."%");
+                $query->where($routes->getTableName().".intermediate LIKE ?", "%".$this->_request->getPost('to')."%");
             }
             if(strlen($this->_request->getPost('date')) > 0){
                 $originalDate = $this->_request->getPost('date');
@@ -80,11 +78,13 @@ class MainController extends Zend_Controller_Action
         
         if ($this->getRequest()->isPost() && $newForm->isValid($this->_request->getPost())) {
             $dataRoute = array(
-                'id' => null,
+                'route_id' => null,
                 'driver_id' => $this->user->id,
                 'start' => $this->_request->getPost('startForm'),
                 'finish' => $this->_request->getPost('endForm'),
-                'intermediate' => $this->_request->getPost('intermed'),
+                'intermediate' => $this->_request->getPost('startForm').','
+                                  .$this->_request->getPost('intermed').','
+                                  .$this->_request->getPost('endForm'),
                 'date' => $this->_request->getPost('routeDate'),
                 'passenger' => $this->_request->getPost('passangers')
             );
