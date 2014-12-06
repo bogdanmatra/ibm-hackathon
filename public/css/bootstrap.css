@@ -43,6 +43,19 @@ audio:not([controls]) {
 template {
   display: none;
 }
+
+#link{
+   color: #C43F40 !important;
+}
+
+.navbar-text.navbar-right .navbar-link{
+  color: #C43F40 !important;
+}
+
+.nav.nav-tabs a{
+  color: #C43F40 !important;
+}
+
 a {
   background-color: transparent;
 }
