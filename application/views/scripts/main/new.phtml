@@ -102,26 +102,23 @@ function showSteps(directionResult) {
   var myRoute = directionResult.routes[0].legs[0];
   var names = [];
   for (var i = 0; i < myRoute.steps.length; i++) {
-    var marker = new google.maps.Marker({
-      position: myRoute.steps[i].start_location,
-      map: map
-    });
-   
 
  var lat = myRoute.steps[i].end_point.k;
  var lng = myRoute.steps[i].end_point.B;
  var start_location = myRoute.steps[i].start_location;
-
+ console.log(myRoute.steps[i]);
    $.ajax({
             url: "http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng+"&sensor=false",
             type: 'get',
             async: false,
             success: function(data) {
+              if(data.results[0].formatted_address){
                 names.push( data.results[0].formatted_address.split(",")[1]);
+              }
             }
         });
 
-    markerArray[i] = marker;
+    
   }
   console.log(names);
 
@@ -134,7 +131,7 @@ function showSteps(directionResult) {
       console.log(stripped);
      var uniqueNames = [];
         $.each(stripped, function(i, el){
-            if($.inArray(el, uniqueNames) === -1) uniqueNames.push(el.latinise());
+            if($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
         });
      
 
@@ -148,6 +145,25 @@ function showSteps(directionResult) {
          }
       }
       remove(uniqueNames, "Romania");
+$.each(uniqueNames, function(i, el){
+            
+    $.ajax({
+      url: "http://maps.googleapis.com/maps/api/geocode/json?address="+el+"&sensor=false",
+      type: "POST",
+      async: false,
+      success: function(res){
+
+     var marker = new google.maps.Marker({
+         position: new google.maps.LatLng(res.results[0].geometry.location.lat,res.results[0].geometry.location.lng),
+          map: map
+        });
+      markerArray[i] = marker;
+         }
+      });
+
+    });
+
+
       $('input[type="hidden"]').val(uniqueNames);
       return names;
 }
@@ -164,18 +180,18 @@ function attachInstructionText(marker, text) {
 }
 
 
-function codeAddress() {
-  var address = document.getElementById('start').value;
-  var doIt = this;
-  geocoder.geocode( { 'address': address}, function(results, status) {
-    if (status == google.maps.GeocoderStatus.OK) {
-      map.setCenter(results[0].geometry.location);
-      doIt.value = results[0].formatted_address;
-    } else {
-      alert('Geocode was not successful for the following reason: ' + status);
-    }
-  });
-}
+// function codeAddress() {
+//   var address = document.getElementById('start').value;
+//   var doIt = this;
+//   geocoder.geocode( { 'address': address}, function(results, status) {
+//     if (status == google.maps.GeocoderStatus.OK) {
+//       map.setCenter(results[0].geometry.location);
+//       doIt.value = results[0].formatted_address;
+//     } else {
+//       //alert('Geocode was not successful for the following reason: ' + status);
+//     }
+//   });
+// }
 
 
 function codeLatLng(lat, lng) {
@@ -277,10 +293,10 @@ getLocation();
         <!-- <input id="address" type="textbox" value="Sydney, NSW">
       <input type="button" value="Geocode" onchange="codeAddress()">
     <b>Start: </b> -->
-    <input type="text" id="start" value="" onchange="codeAddress(this)">
+    <input type="text" id="start" value="" >
    
     <b>End: </b>
-    <input type="text" id="end" value="" onchange="codeAddress(this)">
+    <input type="text" id="end" value="" >
     <input type="button" value="Geocode" onclick="calcRoute()">
     </div>
     <div id="map-canvas" style="width: 60%; float: right;"></div>
