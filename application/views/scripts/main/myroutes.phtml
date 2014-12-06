@@ -20,7 +20,8 @@ function ajaxRequest(data){
 }
 </script>
 
-
+<?php if($this->driver){ ?>
+<h4>Routes as Driver: </h4>
 <table class="table table-condensed">
     <thead>
         <tr>
@@ -28,34 +29,71 @@ function ajaxRequest(data){
             <th>Departure</th>
             <th>Arrival</th>
             <th>Date</th>
-            <th>Completed</th>
+            <th>Status</th>
             <th>Control Area</th>
         </tr>
     </thead>
     <tbody>
         <?php   
         $i = 0;
-        foreach($this->results as $results){
-            $i++;
-            if($results['status'] == 'Complete'){
-                echo '<tr class="success">';
-            } else {
-                echo '<tr>';
-            }
-            
-                echo '<td>'.$i.'</td>';
-                echo '<td>'.$results['start'].'</td>';
-                echo '<td>'.$results['finish'].'</td>';
-                echo '<td>'.$results['date'].'</td>';
-                echo '<td>'.$results['status'].'</td>';
-                
-                if($results['status'] == 'In Progress'){
-                    echo '<td><button type="button" class="btn btn-success btn-sm btn-update-route" '
-                    . 'data="'.$results['route_id'].'">Complete</button></td>';
+        if($this->results){
+            foreach($this->results as $results){
+                $i++;
+                if($results['status'] == 'Complete'){
+                    echo '<tr class="success">';
                 } else {
-                    echo '<td></td>';
+                    echo '<tr>';
                 }
-            echo '</tr>';
+
+                    echo '<td>'.$i.'</td>';
+                    echo '<td>'.$results['start'].'</td>';
+                    echo '<td>'.$results['finish'].'</td>';
+                    echo '<td>'.$results['date'].'</td>';
+                    echo '<td>'.$results['status'].'</td>';
+
+                    if($results['status'] == 'In Progress'){
+                        echo '<td><button type="button" class="btn btn-success btn-sm btn-update-route" '
+                        . 'data="'.$results['route_id'].'">Complete</button></td>';
+                    } else {
+                        echo '<td></td>';
+                    }
+                echo '</tr>';
+            }
+        }
+        
+        ?>
+    </tbody>
+</table>
+<?php } ?>
+
+<h4>Routes as Passsanger: </h4>
+<table class="table table-condensed">
+    <thead>
+        <tr>
+            <th>Trip No.</th>
+            <th>Departure</th>
+            <th>Arrival</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php   
+        $i = 0;
+        if($this->passangerResults){
+            foreach($this->passangerResults as $results){
+                $i++;
+                if($results['status'] == 'Complete'){
+                    echo '<tr class="success">';
+                } else {
+                    echo '<tr>';
+                }
+
+                    echo '<td>'.$i.'</td>';
+                    echo '<td>'.$results['start'].'</td>';
+                    echo '<td>'.$results['finish'].'</td>';
+                    echo '<td>'.$results['date'].'</td>';
+                echo '</tr>';
+            }
         }
         
         ?>

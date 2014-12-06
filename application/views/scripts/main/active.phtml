@@ -11,10 +11,56 @@
     $(function() {
         $("#dateFilter").datepicker({ dateFormat: 'dd.mm.yy', minDate: 'dateToday'}); 
         ajaxRequest();
+        
+        $('#successInfo, #failInfo, #yoursInfo').dialog({
+            autoOpen: false,
+            closeOnEscape: true,
+            beforeclose: function (event, ui) { return false; },
+            buttons: [
+            {
+               text: "OK",
+               "class": "btn btn-danger",
+               click: function() { 
+                  $(this).dialog("close"); 
+               }
+            }
+            ],
+            width: 350,
+            height: 200,
+            close: function (event, ui){
+                event.stopPropagation();
+            },
+            resizable: false,
+            draggable: false,
+            modal: true 
+        }); 
+        
         $('#fromFilter, #toFilter').keyup(function(){
            delay(function(){
                ajaxRequest();
            }, 400); 
+        });
+        
+        $('.asignPass').click(function(){
+            $.ajax({
+                type: 'POST',
+                url: '/main/addpass',
+                data: { route: $(this).attr('data-id'), pass: $(this).attr('data-pass')},
+                dataType: 'json',
+                async: false, 
+                cache: false,
+                success: function(data){
+                    if(data !== 404 && data !== 'exista' && data !== 'yours'){
+                        $('#successInfo').dialog('open');
+                        ajaxRequest();
+                    } else if(data == 'exista'){
+                        $('#failInfo').dialog('open');
+                    } else if(data == 'yours'){
+                        $('#yoursInfo').dialog('open');
+                    } 
+                }
+            });
+            
         });
         
         $('#dateFilter').change(function(){
@@ -43,12 +89,17 @@ function ajaxRequest(){
         cache: false,
         success: function(data){
 
-            $("#mustdelete").empty();
+        $("#mustdelete").empty();
             jQuery.each( data, function( i, val ) {
-                console.log(val);
+//                console.log(val);
                 var myVar = "";
                 if(val.passenger==0) { myVar="disabled"; }
-    var out =  "<div class='jumbotron'><p>From:  "+val.start+"<div class='pull-right'>Passengers remaining: "+val.passenger+"</div>"+"</p><p>To: "+val.finish+"</p><p> Date: "+val.date+"</p><p> Telephone: "+val.telephone+"</p><p> Name : "+val.first_name+" " +val.last_name+"</p><p><a class='btn btn-primary btn-lg' href='/go/"+val.user_id+"/"+val.id+"' role='button'"+ myVar +">Learn more</a></p> </div>";
+                <?php 
+                    if(!$this->userId){ ?> myVar="disabled"; <?php }
+                ?>
+    var out =  "<div class='jumbotron'><p>From:  "+val.start+"<div class='pull-right'>Passengers remaining: "+val.passenger+"</div>"+"</p><p>To: "+val.finish+"</p><p> Date: "+val.date+"</p><p> Telephone: "+val.telephone+"</p><p> Name : "+val.first_name+" " +val.last_name+"</p><p>\n\
+<button class='btn btn-primary btn-lg asignPass' data-id='"+val.route_id+"' data-pass='"+val.passenger+"' role='button'"+ myVar +">Let\'s Carpool!</button>\n\
+</p> </div>";
     $("#mustdelete").append(out);
             });
         }          
@@ -65,3 +116,19 @@ function ajaxRequest(){
  </div>    
 </div>
 <div>
+    
+    
+<div id="successInfo" title="Success!" style="margin:0px; padding:0px; overflow:hidden">
+    <br>
+    <p style="text-align: center">You have successfully been added to this route!</p>
+</div>
+    
+<div id="failInfo" title="Warning!" style="margin:0px; padding:0px; overflow:hidden">
+    <br>
+    <p style="text-align: center">You are already expected to take part!</p>
+</div>
+    
+<div id="yoursInfo" title="Warning!" style="margin:0px; padding:0px; overflow:hidden">
+    <br>
+    <p style="text-align: center">You cannot carpool in your own route!</p>
+</div>

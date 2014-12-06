@@ -27,7 +27,7 @@ class MainController extends Zend_Controller_Action
     
     public function activeAction()
     {
-        
+        $this->view->userId = $this->user->id;
     }
     
     public function filterAction(){
@@ -46,6 +46,7 @@ class MainController extends Zend_Controller_Action
                     $routes->getTableName().'.driver_id = '.$users->getTableName().'.id');
             $query->join($drivers->getTableName(), 
                     $users->getTableName().'.id = '.$drivers->getTableName().'.user_id');
+            $query->where($routes->getTableName().".status = ?", "In Progress");
             
             if(strlen($this->_request->getPost('from')) > 0){
                 $query->where($routes->getTableName().".start LIKE ?", "%".$this->_request->getPost('from')."%");
@@ -58,7 +59,7 @@ class MainController extends Zend_Controller_Action
             if(strlen($this->_request->getPost('date')) > 0){
                 $originalDate = $this->_request->getPost('date');
                 $newDate = date("Y-m-d", strtotime($originalDate));
-                $query->having($routes->getTableName().".added LIKE ?", $newDate."%");
+                $query->where($routes->getTableName().".added LIKE ?", $newDate."%");
             }
             
             $results = $db->fetchAll($query);
@@ -98,7 +99,7 @@ class MainController extends Zend_Controller_Action
         $db = Zend_Db_Table::getDefaultAdapter();
         $routes = new Application_Model_Routes();
         $users = new Application_Model_Users();
-//        $drivers = new Application_Model_Driver();
+        $bind = new Application_Model_Bind();
         
         $query = $db->select()->from($routes->getTableName());
         $query->join($users->getTableName(), 
@@ -109,6 +110,22 @@ class MainController extends Zend_Controller_Action
         $results = $db->fetchAll($query);
         
         $this->view->results = $results;
+        
+        $query2 = $db->select()->from($users->getTableName(), array('driver_flag'));
+        $query2->where($users->getTableName().'.id = ?', $this->user->id);
+        $driver= $db->fetchOne($query2);
+        
+        $query3 = $db->select()->from($routes->getTableName());
+        $query3->join($bind->getTableName(), 
+                $routes->getTableName().'.route_id = '.$bind->getTableName().'.route_id');
+        $query3->where($bind->getTableName().'.user_id = ?', $this->user->id);
+        $passangers = $db->fetchAll($query3);
+        
+        $this->view->results = $results;
+        $this->view->driver = $driver;
+        $this->view->passangerResults = $passangers;
+        
+        
         
     }
     
@@ -131,10 +148,57 @@ class MainController extends Zend_Controller_Action
                 $this->_helper->json(1);
             }
             $this->_helper->json(0);
+        }
+    }
+    
+    public function addpassAction(){
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+        
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $bind = new Application_Model_Bind();
+        $routes = new Application_Model_Routes();
+        
+
+        
+        if($this->_request->isPost() && isset($this->user->id)){
+            $query = $db->select()->from($bind->getTableName(), array('COUNT(*) as count'));
+            $query->where('user_id = ?', $this->user->id);
+            $query->where('route_id = ?', htmlentities($this->_request->getPost('route')));
+            $counter = $db->fetchOne($query);
             
+            $query2 = $db->select()->from($routes->getTableName(), array('COUNT(*) as count'));
+            $query2->where('driver_id = ?', $this->user->id);
+            $counter2 = $db->fetchOne($query2);
             
+            if($counter > 0){
+                $this->_helper->json('exista');
+            }
+            
+            if($counter2 > 0){
+                $this->_helper->json('yours');
+            }
+            
+            $dataBind = array(
+                'id' => null,
+                'route_id' => htmlentities($this->_request->getPost('route')),
+                'user_id' => $this->user->id
+            );
+            $passangersRemaining = (int)htmlentities($this->_request->getPost('pass')) - 1;
+            $dataUpdatePass = array(
+                'passenger' => (int)$passangersRemaining
+            );
+            $whereUpdate = array('route_id = ?' => htmlentities($this->_request->getPost('route')));
+            try {
+                $db->insert($bind->getTableName(), $dataBind);
+                $db->update($routes->getTableName(), $dataUpdatePass, $whereUpdate);
+            } catch (Zend_Exception $e) {
+                $this->_helper->json(404);
+            }
+            $this->_helper->json($passangersRemaining);
             
         }
+        
     }
     
     
