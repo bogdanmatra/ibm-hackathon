@@ -112,7 +112,7 @@ function showSteps(directionResult) {
             type: 'get',
             async: false,
             success: function(data) {
-              if(data.results[0].formatted_address){
+              if('formatted_address' in data.results[0] && data.results[0].formatted_address ){
                 names.push( data.results[0].formatted_address.split(",")[1]);
               }
             }
@@ -152,12 +152,13 @@ $.each(uniqueNames, function(i, el){
       type: "POST",
       async: false,
       success: function(res){
-
+        if('geometry' in res.results[0] && res.results[0].geometry){
      var marker = new google.maps.Marker({
          position: new google.maps.LatLng(res.results[0].geometry.location.lat,res.results[0].geometry.location.lng),
           map: map
         });
       markerArray[i] = marker;
+    }
          }
       });
 
@@ -179,19 +180,6 @@ function attachInstructionText(marker, text) {
   });
 }
 
-
-// function codeAddress() {
-//   var address = document.getElementById('start').value;
-//   var doIt = this;
-//   geocoder.geocode( { 'address': address}, function(results, status) {
-//     if (status == google.maps.GeocoderStatus.OK) {
-//       map.setCenter(results[0].geometry.location);
-//       doIt.value = results[0].formatted_address;
-//     } else {
-//       //alert('Geocode was not successful for the following reason: ' + status);
-//     }
-//   });
-// }
 
 
 function codeLatLng(lat, lng) {
