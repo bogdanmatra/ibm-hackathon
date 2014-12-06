@@ -124,7 +124,7 @@ form[id="registerInfo"] > input[type="text"]:hover, form[id="registerInfo"] > in
 /*end of registration info dialog*/
 #submitUser{
     margin-right: 20px;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 /*css for new route form*/
