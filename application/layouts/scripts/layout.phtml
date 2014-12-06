@@ -52,6 +52,7 @@
         <ul class="nav nav-tabs">
             <li role="presentation" class="active"><a href="/main/home">Home</a></li>
             <li role="presentation" ><a href="/main/active">Active Routes</a></li>
+
             <?php 
             if(isset($this->user) && $this->user->driver_flag === "1"){
             ?>
@@ -60,14 +61,7 @@
                 <li role="presentation" class="disabled"><a href="#">New Route</a></li>
             <?php } ?>
             
-            <li role="presentation" class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                Dropdown <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu" role="menu">
-
-              </ul>
-            </li>
+           <li role="presentation" ><a href="/main/myroutes">My Routes</a></li>
         </ul>
         
         
