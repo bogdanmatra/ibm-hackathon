@@ -7,9 +7,10 @@
  
 </div>
 <script type="text/javascript">
+
     $(function() {
         $("#dateFilter").datepicker({ dateFormat: 'dd.mm.yy', minDate: 'dateToday'}); 
-        
+        ajaxRequest();
         $('#fromFilter, #toFilter').keyup(function(){
            delay(function(){
                ajaxRequest();
@@ -41,54 +42,26 @@ function ajaxRequest(){
         async: false, 
         cache: false,
         success: function(data){
-            console.log(data);
+
+            $("#mustdelete").empty();
+            jQuery.each( data, function( i, val ) {
+                console.log(val);
+                var myVar = "";
+                if(val.passenger==0) { myVar="disabled"; }
+    var out =  "<div class='jumbotron'><p>From:  "+val.start+"<div class='pull-right'>Passengers remaining: "+val.passenger+"</div>"+"</p><p>To: "+val.finish+"</p><p> Date: "+val.date+"</p><p> Telephone: "+val.telephone+"</p><p> Name : "+val.first_name+" " +val.last_name+"</p><p><a class='btn btn-primary btn-lg' href='/go/"+val.user_id+"/"+val.id+"' role='button'"+ myVar +">Learn more</a></p> </div>";
+    $("#mustdelete").append(out);
+            });
         }          
     }); 
 }
+
+
 </script>
-
-  <?php 
-
+<div id="mustdelete">
+</div>
  
 
-  foreach($this->results as $results){
-     echo " <div class='jumbotron'>";
-     $fname;
-     $lanme;
-     $id;
-     $role_id;
-        foreach($results as $key => $result){
-            if ($key=="start"){
-            echo '<p>From:  '.$result.'</p>';
-              }
-               if ( $key=="finish" ){
-            echo '<p>To: '.$result.'</p>';
-              }
-               if ( $key=="first_name" || $key=="last_name"){
-           $fname=$result;
-              }
-              if (  $key=="last_name"){
-             $lname=$result;
-              }
-              if (  $key=="id"){
-             $role_id=$result;
-              }
-              if (  $key=="id"){
-             $id=$result;
-              }
-              if (  $key=="telephone"){
-          echo '<p> Telephone: '.$result.'</p>';
-              }
-               if (  $key=="date"){
-        echo '<p> Date: '.$result.'</p>';
-              }
-         
-        }
-         echo '<p> Name : '.$fname." ".$lname.'</p>';
-        echo "<p><a class='btn btn-primary btn-lg' href='/go/".$id."/".$role_id."' role='button'>Learn more</a></p>";
-         echo ' </div >';
-    }
-  ?>
-     
+  
+ </div>    
 </div>
 <div>
