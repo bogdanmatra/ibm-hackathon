@@ -30,15 +30,17 @@ class Application_Form_Route extends Zend_Form
         $start->setAttrib('autocomplete', 'off');
         $start->addFilter('StripTags');
         $start->addFilter('HtmlEntities');
+        $start->setAttrib('class', 'form-control');
         $start->addFilter('StringTrim');
         $start->setRequired(true)->addErrorMessage('Username Required');
         $start->addValidator('EmailAddress')->addErrorMessage('Invalid Email used');
         $start->addValidator('StringLength', true, array(0, 255))->addErrorMessage('Required Field');
                 
-        $end = new Zend_Form_Element_Password('end');
+        $end = new Zend_Form_Element_Text('end');
         $end->setLabel('Destination*');
         $end->setAttrib('autocomplete', 'off');
         $end->addFilter('StripTags');
+        $end->setAttrib('class', 'form-control');
         $end->addFilter('HtmlEntities');
         $end->addFilter('StringTrim');
         $end->setRequired(true)->addErrorMessage('Password Required');
@@ -46,13 +48,15 @@ class Application_Form_Route extends Zend_Form
         
         $routeDate = new Zend_Form_Element_Text('routeDate');
         $routeDate->setAttrib('autocomplete', 'off');
-        $routeDate->setAttrib('readonly', 'readonly');
+     
         $routeDate->setAttrib('maxlength', '10');
+        $routeDate->setAttrib('class', 'form-control');
         $routeDate->setLabel('Date of Journey'.'*');
         $routeDate->addFilter('StripTags');
         $routeDate->addFilter('HtmlEntities');
         $routeDate->addFilter('StringTrim');
         $routeDate->addValidator('Regex', true, array('/^[0-9.\s]*$/'))->addErrorMessage('Invalid characters used');
+        $routeDate->addValidator('StringLength', true, array(10, 10))->addErrorMessage('Required Field');
        
         $passangers = new Zend_Form_Element_Select('passangers');
         $passangers->setLabel('No of Passangers*');
@@ -77,6 +81,7 @@ class Application_Form_Route extends Zend_Form
         $submit = new Zend_Form_Element_Submit('newRoute');
         $submit->setLabel('New Route');
         $submit->setAttrib('class', 'btn btn-info');
+        $submit->setAttrib('style', 'margin-top:20px');
         
         $this->addElements(array($note, $start, $end, $passangers, $routeDate, $submit ));
 
