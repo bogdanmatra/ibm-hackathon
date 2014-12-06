@@ -1,3 +1,26 @@
+<script>
+    $(document).ready(function(){
+       $('.btn-update-route').click(function(){
+          ajaxRequest($(this).attr('data'));
+       }); 
+    });
+
+function ajaxRequest(data){
+    $.ajax({
+        type: 'POST',
+        url: '/main/updateroute',
+        data: { data : data },
+        dataType: 'json',
+        async: false, 
+        cache: false,
+        success: function(data){
+            location.reload();
+        }          
+    }); 
+}
+</script>
+
+
 <table class="table table-condensed">
     <thead>
         <tr>
@@ -14,17 +37,24 @@
         $i = 0;
         foreach($this->results as $results){
             $i++;
-            echo '<tr>';
-            echo '<td>'.$i.'</td>';
-            echo '<td>'.$results['start'].'</td>';
-            echo '<td>'.$results['finish'].'</td>';
-            echo '<td>'.$results['date'].'</td>';
-            echo '<td>'.$results['status'].'</td>';
-            echo '<td>'.$results['status'].'</td>';
-//            var_dump($results[]);
-//            foreach($results as $key => $result){
-//                echo $key.': '.$result.'<br>';
-//            }
+            if($results['status'] == 'Complete'){
+                echo '<tr class="success">';
+            } else {
+                echo '<tr>';
+            }
+            
+                echo '<td>'.$i.'</td>';
+                echo '<td>'.$results['start'].'</td>';
+                echo '<td>'.$results['finish'].'</td>';
+                echo '<td>'.$results['date'].'</td>';
+                echo '<td>'.$results['status'].'</td>';
+                
+                if($results['status'] == 'In Progress'){
+                    echo '<td><button type="button" class="btn btn-success btn-sm btn-update-route" '
+                    . 'data="'.$results['route_id'].'">Complete</button></td>';
+                } else {
+                    echo '<td></td>';
+                }
             echo '</tr>';
         }
         

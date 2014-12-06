@@ -112,6 +112,31 @@ class MainController extends Zend_Controller_Action
         
     }
     
+    public function updaterouteAction(){
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+        
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $routes = new Application_Model_Routes();
+        
+        if($this->_request->isPost()){
+            $updateData = array(
+                'status' => 'Complete'
+            );
+            $where = array('route_id = ?' => $this->_request->getPost('data'));
+            
+            try {
+                $db->update($routes->getTableName(), $updateData, $where);
+            } catch (Zend_Exception $e) {
+                $this->_helper->json(1);
+            }
+            $this->_helper->json(0);
+            
+            
+            
+        }
+    }
+    
     
 }
 
