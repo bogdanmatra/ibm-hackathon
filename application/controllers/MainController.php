@@ -38,13 +38,52 @@ class MainController extends Zend_Controller_Action
                 $routes->getTableName().'.driver_id = '.$users->getTableName().'.id');
         $query->join($drivers->getTableName(), 
                 $users->getTableName().'.id = '.$drivers->getTableName().'.user_id');
-//        $query->where($this->user->db_name.'.'.$categoryVat->getTableName().".store_id = ?", $this->selectedStoreId);
+//        $query->where($routes->getTableName().".store_id = ?", $this->selectedStoreId);
 //        $query->limit($_GET['iDisplayLength'], $_GET['iDisplayStart']);
 //        $query->order($this->user->db_name.'.'.$categoryVat->getTableName().".category ASC");
 
         $results = $db->fetchAll($query);
         $this->view->results = $results;
         
+        
+    }
+    
+    public function filterAction(){
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+        
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $routes = new Application_Model_Routes();
+        $users = new Application_Model_Users();
+        $drivers = new Application_Model_Driver();
+        
+        
+        if($this->_request->isPost()){
+            $query = $db->select()->from($routes->getTableName());
+            $query->join($users->getTableName(), 
+                    $routes->getTableName().'.driver_id = '.$users->getTableName().'.id');
+            $query->join($drivers->getTableName(), 
+                    $users->getTableName().'.id = '.$drivers->getTableName().'.user_id');
+            
+            if(strlen($this->_request->getPost('from')) > 0){
+                $query->where($routes->getTableName().".start LIKE ?", "%".$this->_request->getPost('from')."%");
+                $query->orWhere($routes->getTableName().".intermediate LIKE ?", "%".$this->_request->getPost('from')."%");
+            }
+            if(strlen($this->_request->getPost('to')) > 0){
+                $query->where($routes->getTableName().".finish LIKE ?", "%".$this->_request->getPost('to')."%");
+                $query->orWhere($routes->getTableName().".intermediate LIKE ?", "%".$this->_request->getPost('to')."%");
+            }
+            if(strlen($this->_request->getPost('date')) > 0){
+                $originalDate = $this->_request->getPost('date');
+                $newDate = date("Y-m-d", strtotime($originalDate));
+                $query->where($routes->getTableName().".added LIKE ?", $newDate."%");
+            }
+            
+            $results = $db->fetchAll($query);
+            $this->_helper->json($results);
+        }
+        
+
         
     }
     

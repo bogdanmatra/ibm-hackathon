@@ -1,17 +1,50 @@
 <div class="container" style="margin-top: 10px;">
    
    <div class="input-group" style="margin-bottom:10px">
-  <span class="input-group-addon">From</span><input type="text" class="form-control"/>
-  <span class="input-group-addon">To</span> <input type="text" class="form-control"/>
-  <span class="input-group-addon">Date</span>  <input type="text" class="form-control" id="jqDpiker"/>
+  <span class="input-group-addon">From</span><input type="text" id="fromFilter" class="form-control"/>
+  <span class="input-group-addon">To</span> <input type="text" id="toFilter" class="form-control"/>
+  <span class="input-group-addon">Date</span>  <input type="text" id="dateFilter" class="form-control"/>
  
 </div>
-  <script>
- $(function() {
+<script type="text/javascript">
+    $(function() {
+        $("#dateFilter").datepicker({ dateFormat: 'dd.mm.yy', minDate: 'dateToday'}); 
+        
+        $('#fromFilter, #toFilter').keyup(function(){
+           delay(function(){
+               ajaxRequest();
+           }, 400); 
+        });
+        
+        $('#dateFilter').change(function(){
+           delay(function(){
+               ajaxRequest();
+           }, 400); 
+        });
+        
+     });
+     
+var delay = (function(){
+  var timer = 0;
+  return function(callback, ms){
+    clearTimeout (timer);
+    timer = setTimeout(callback, ms);
+  };
+})();
 
-     $("#jqDpiker").datepicker({ dateFormat: 'dd.mm.yy', minDate: 'dateToday'});
-                
-  });
+function ajaxRequest(){
+    $.ajax({
+        type: 'POST',
+        url: '/main/filter',
+        data: { from: $('#fromFilter').val(), to: $('#toFilter').val(), date: $('#dateFilter').val() },
+        dataType: 'json',
+        async: false, 
+        cache: false,
+        success: function(data){
+            console.log(data);
+        }          
+    }); 
+}
 </script>
 
   <?php 
