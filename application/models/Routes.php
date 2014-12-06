@@ -8,7 +8,7 @@
 
 class Application_Model_Routes extends Zend_Db_Table {
     protected $_name = "routes"; //table name from db
-    protected $_primary = "id"; //table pk
+    protected $_primary = "route_id"; //table pk
  
     public function getTableName()
     {
