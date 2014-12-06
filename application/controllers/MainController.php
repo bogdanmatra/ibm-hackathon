@@ -27,7 +27,7 @@ class MainController extends Zend_Controller_Action
     
     public function activeAction()
     {
-        $this->view->userId = $this->user->id;
+        if($this->user) { $this->view->userId = $this->user->id; }
     }
     
     public function filterAction(){
