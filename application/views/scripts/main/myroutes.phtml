@@ -6,18 +6,30 @@
             <th>Arrival</th>
             <th>Date</th>
             <th>Completed</th>
+            <th>Control Area</th>
         </tr>
     </thead>
     <tbody>
+        <?php   
+        $i = 0;
+        foreach($this->results as $results){
+            $i++;
+            echo '<tr>';
+            echo '<td>'.$i.'</td>';
+            echo '<td>'.$results['start'].'</td>';
+            echo '<td>'.$results['finish'].'</td>';
+            echo '<td>'.$results['date'].'</td>';
+            echo '<td>'.$results['status'].'</td>';
+            echo '<td>'.$results['status'].'</td>';
+//            var_dump($results[]);
+//            foreach($results as $key => $result){
+//                echo $key.': '.$result.'<br>';
+//            }
+            echo '</tr>';
+        }
         
+        ?>
     </tbody>
 </table>
 
 
-<?php   
-
-foreach($this->results as $results){
-    foreach($results as $key => $result){
-        echo $key.': '.$result.'<br>';
-    }
-}

@@ -86,7 +86,6 @@ var application = {
                         });
                     } else {
                         $('input').css('border', '1px solid rgba(204, 204, 204, 0.1)');
-                        $('textarea').css('border', '1px solid rgba(204, 204, 204, 0.1)');
                         $('#successInfo').dialog('open');
                     }
                 }
@@ -106,7 +105,35 @@ var application = {
         });
     });
       
-  }
+  },
+  loginFormSubmit : function (){
+    $(document).ready(function(){
+        $('#msform').submit(function(){
+            var dataPost = $(this).serializeArray();
+            
+            $.ajax({
+                type: 'POST',
+                url: '/index/login',
+                data: { dataPost: dataPost },
+                dataType: 'json',
+                async: false, 
+                cache: false,
+                success: function(data){ //returned json object => errors or 0 for ok
+                    $('input').css('border', '1px solid rgba(204, 204, 204, 0.1)');
+                    
+                    if(data !== 0){
+                            $('#msform > input[type!="submit"]').css('border', '1px solid #C43F40');
+                            //highlight fields that have not passed validation
+                    } else {
+                        $('input').css('border', '1px solid rgba(204, 204, 204, 0.1)');
+                        location.reload();
+                    }
+                }
+            });
+            return false;
+        });
+    });
+  }  
 };
 
 function showFields(){
