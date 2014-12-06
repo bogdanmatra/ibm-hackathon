@@ -17,7 +17,7 @@ class Application_Form_Login extends Zend_Form
     public function init()
     {
         $this->setMethod('post');
-        $this->setAction('/index/login');
+//        $this->setAction('/index/login');
         $this->setAttrib('id', 'msform');
      
         $email = new Zend_Form_Element_Text('email');

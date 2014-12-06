@@ -20,6 +20,7 @@
                                   ->appendFile($fc->getBaseUrl().'/js/maskedInput.js')
                                   ->appendScript('application.topMenuRegister();', 'text/javascript')
                                   ->appendScript('application.registerFormSubmit();', 'text/javascript')
+                                  ->appendScript('application.loginFormSubmit();', 'text/javascript')
                                   ->appendScript('application.setActiveMenu();', 'text/javascript')
                                   ->prependScript('activeMenu = "'.$this->activeMenu.'"'); ?>
 </head>
@@ -60,8 +61,16 @@
             <?php } else { ?>
                 <li role="presentation" class="disabled"><a href="#">New Route</a></li>
             <?php } ?>
+                
+            <?php 
+            if(isset($this->user)){
+            ?>
+                <li role="presentation" ><a href="/main/myroutes">My Routes</a></li>
+            <?php } else { ?>
+                <li role="presentation" class="disabled"><a href="#">My Routes</a></li>
+            <?php } ?>
             
-           <li role="presentation" ><a href="/main/myroutes">My Routes</a></li>
+           
         </ul>
         
         

@@ -26,34 +26,41 @@ class IndexController extends Zend_Controller_Action
         
        $formLogin = new Application_Form_Login();
        
-       if ($this->getRequest()->isPost() && $formLogin->isValid($this->_request->getPost())) {
-            $user = $this->_request->getPost('email');
-            $password = $this->_request->getPost('password');
-
-             $adapter = new Zend_Auth_Adapter_DbTable(
-                     null,
-                     'users',
-                     'email',
-                     'password'
-                     );
-
-            $adapter->setIdentity($user);
-            $adapter->setCredential($password);
-            Zend_Session::regenerateId();
-            $auth = Zend_Auth::getInstance();
-            $result = $auth->authenticate($adapter);
-
-            if($result->isValid()){
-                $user = $adapter->getResultRowObject();
-                $auth->getStorage()->write($user);
-                $this->redirect('/main/active'); 
-            } else {
-                $this->view->errorMessages = "Username and/or Password are incorrect";  
+       if ($this->getRequest()->isPost()){ 
+            foreach($this->_request->getPost('dataPost') as $dataArray){
+                $name = $dataArray['name'];
+                $formDataForValidation["$name"] = $dataArray['value']; 
+                
             }
-        } else {
-            $this->redirect('/main/home');
-        } 
-//        }
+            
+            if($formLogin->isValid($formDataForValidation)){
+                $user = $formDataForValidation['email'];
+                $password = $formDataForValidation['password'];
+
+                 $adapter = new Zend_Auth_Adapter_DbTable(
+                         null,
+                         'users',
+                         'email',
+                         'password'
+                         );
+
+                $adapter->setIdentity($user);
+                $adapter->setCredential($password);
+                Zend_Session::regenerateId();
+                $auth = Zend_Auth::getInstance();
+                $result = $auth->authenticate($adapter);
+
+                if($result->isValid()){
+                    $user = $adapter->getResultRowObject();
+                    $auth->getStorage()->write($user);
+                    $this->_helper->json(0);
+                } else {
+                    $this->_helper->json(1);
+                }
+            } else {
+                $this->_helper->json(1);
+            }
+       }
     } 
     
     public function mainAction(){

@@ -134,7 +134,7 @@ function showSteps(directionResult) {
       console.log(stripped);
      var uniqueNames = [];
         $.each(stripped, function(i, el){
-            if($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
+            if($.inArray(el, uniqueNames) === -1) uniqueNames.push(el.latinise());
         });
      
 
@@ -149,7 +149,6 @@ function showSteps(directionResult) {
       }
       remove(uniqueNames, "Romania");
       $('input[type="hidden"]').val(uniqueNames);
-      console.log(uniqueNames);
       return names;
 }
 
@@ -202,7 +201,7 @@ function codeLatLng(lat, lng) {
 
         var address = document.getElementById('start');
         address.value = city.long_name;
-        $('#startForm').val(city.long_name);
+        $('#startForm').val(city.long_name.latinise());
 
         } else {
           alert("No results found");
@@ -246,7 +245,7 @@ getLocation();
 <script type="text/javascript">
     $(document).ready(function(){
         $('#start').on('keyup', function(){
-           $('#startForm').val($(this).val()); 
+           $('#startForm').val($(this).val().latinise()); 
         }); 
         
         $('#startForm').on('keyup', function(){
@@ -258,7 +257,7 @@ getLocation();
         }); 
         
         $('#end').on('keyup', function(){
-           $('#endForm').val($(this).val()); 
+           $('#endForm').val($(this).val().latinise()); 
         }); 
         
         $('#endForm').focusout(function(){

@@ -27,24 +27,6 @@ class MainController extends Zend_Controller_Action
     
     public function activeAction()
     {
-        $db = Zend_Db_Table::getDefaultAdapter();
-        $routes = new Application_Model_Routes();
-        $users = new Application_Model_Users();
-        $drivers = new Application_Model_Driver();
-        
-        
-        $query = $db->select()->from($routes->getTableName());
-        $query->join($users->getTableName(), 
-                $routes->getTableName().'.driver_id = '.$users->getTableName().'.id');
-        $query->join($drivers->getTableName(), 
-                $users->getTableName().'.id = '.$drivers->getTableName().'.user_id');
-//        $query->where($routes->getTableName().".store_id = ?", $this->selectedStoreId);
-//        $query->limit($_GET['iDisplayLength'], $_GET['iDisplayStart']);
-//        $query->order($this->user->db_name.'.'.$categoryVat->getTableName().".category ASC");
-
-        $results = $db->fetchAll($query);
-        $this->view->results = $results;
-        
         
     }
     
@@ -76,7 +58,7 @@ class MainController extends Zend_Controller_Action
             if(strlen($this->_request->getPost('date')) > 0){
                 $originalDate = $this->_request->getPost('date');
                 $newDate = date("Y-m-d", strtotime($originalDate));
-                $query->where($routes->getTableName().".added LIKE ?", $newDate."%");
+                $query->having($routes->getTableName().".added LIKE ?", $newDate."%");
             }
             
             $results = $db->fetchAll($query);
@@ -109,6 +91,24 @@ class MainController extends Zend_Controller_Action
             $db->insert($routes->getTableName(), $dataRoute);
             $this->redirect('/main/active');
         }
+        
+    }
+    
+    public function myroutesAction(){
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $routes = new Application_Model_Routes();
+        $users = new Application_Model_Users();
+//        $drivers = new Application_Model_Driver();
+        
+        $query = $db->select()->from($routes->getTableName());
+        $query->join($users->getTableName(), 
+                $routes->getTableName().'.driver_id = '.$users->getTableName().'.id');
+//        $query->join($drivers->getTableName(), 
+//                $users->getTableName().'.id = '.$drivers->getTableName().'.user_id');
+        $query->where($users->getTableName().'.id = ?', $this->user->id);
+        $results = $db->fetchAll($query);
+        
+        $this->view->results = $results;
         
     }
     
