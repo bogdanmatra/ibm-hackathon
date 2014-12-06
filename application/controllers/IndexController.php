@@ -46,7 +46,7 @@ class IndexController extends Zend_Controller_Action
             if($result->isValid()){
                 $user = $adapter->getResultRowObject();
                 $auth->getStorage()->write($user);
-                $this->redirect('/main/home'); 
+                $this->redirect('/main/active'); 
             } else {
                 $this->view->errorMessages = "Username and/or Password are incorrect";  
             }

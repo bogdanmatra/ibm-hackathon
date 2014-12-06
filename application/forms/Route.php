@@ -17,44 +17,51 @@ class Application_Form_Route extends Zend_Form
     public function init()
     {
         $this->setMethod('post');
-        $this->setAction('/main/addnew');
+        $this->setAction('/main/new');
         $this->setAttrib('id', 'newRoute');
         
         $note = new Zend_Form_Element_Note(
             'title',
             array('value' => '<h2 id="titleProductDetails">Create a New Route</h2>')
         );
+        
+        $intermed = new Zend_Form_Element_Hidden('intermed');
+        $intermed->setAttrib('readonly', 'readonly');
+        $intermed->addFilter('StripTags');
+        $intermed->addFilter('HtmlEntities');
+        $intermed->addFilter('StringTrim');
      
-        $start = new Zend_Form_Element_Text('start');
+        $start = new Zend_Form_Element_Text('startForm');
         $start->setLabel('Starting Point*');
         $start->setAttrib('autocomplete', 'off');
         $start->addFilter('StripTags');
         $start->addFilter('HtmlEntities');
         $start->setAttrib('class', 'form-control');
         $start->addFilter('StringTrim');
-        $start->setRequired(true)->addErrorMessage('Username Required');
-        $start->addValidator('EmailAddress')->addErrorMessage('Invalid Email used');
-        $start->addValidator('StringLength', true, array(0, 255))->addErrorMessage('Required Field');
+        $start->setRequired(true)->addErrorMessage('Start Location Required');
+//        $start->addValidator('Regex', true, array('/^[a-zA-Z0-9.,:-\s]*$/'))->addErrorMessage('Invalid characters used');
+//        $start->addValidator('StringLength', true, array(0, 255))->addErrorMessage('Required Field');
                 
-        $end = new Zend_Form_Element_Text('end');
+        $end = new Zend_Form_Element_Text('endForm');
         $end->setLabel('Destination*');
         $end->setAttrib('autocomplete', 'off');
         $end->addFilter('StripTags');
         $end->setAttrib('class', 'form-control');
         $end->addFilter('HtmlEntities');
         $end->addFilter('StringTrim');
-        $end->setRequired(true)->addErrorMessage('Password Required');
-        $end->addValidator('StringLength', true, array(0, 255))->addErrorMessage('Required Field');
+        $end->setRequired(true)->addErrorMessage('Destination Required');
+//        $end->addValidator('StringLength', true, array(0, 255))->addErrorMessage('Required Field');
         
         $routeDate = new Zend_Form_Element_Text('routeDate');
         $routeDate->setAttrib('autocomplete', 'off');
-     
+        $routeDate->setAttrib('readonly', 'readonly');
         $routeDate->setAttrib('maxlength', '10');
         $routeDate->setAttrib('class', 'form-control');
         $routeDate->setLabel('Date of Journey'.'*');
         $routeDate->addFilter('StripTags');
         $routeDate->addFilter('HtmlEntities');
         $routeDate->addFilter('StringTrim');
+        $routeDate->setRequired(true)->addErrorMessage('Date Required');
         $routeDate->addValidator('Regex', true, array('/^[0-9.\s]*$/'))->addErrorMessage('Invalid characters used');
         $routeDate->addValidator('StringLength', true, array(10, 10))->addErrorMessage('Required Field');
        
@@ -83,7 +90,7 @@ class Application_Form_Route extends Zend_Form
         $submit->setAttrib('class', 'btn btn-info');
         $submit->setAttrib('style', 'margin-top:20px');
         
-        $this->addElements(array($note, $start, $end, $passangers, $routeDate, $submit ));
+        $this->addElements(array($note, $intermed, $start, $end, $passangers, $routeDate, $submit ));
 
         $this->setElementDecorators(array(
             'ViewHelper',

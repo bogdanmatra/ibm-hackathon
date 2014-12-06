@@ -97,7 +97,6 @@ var application = {
   },
   setActiveMenu : function (){
     $(document).ready(function(){
-        console.log(activeMenu);
         $('.nav').children('li[class!="dropdown"]').each(function(){
             $(this).removeClass('active');
             if($(this).children('a').attr('href') === '/'+activeMenu){

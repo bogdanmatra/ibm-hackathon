@@ -148,6 +148,7 @@ function showSteps(directionResult) {
          }
       }
       remove(uniqueNames, "Romania");
+      $('input[type="hidden"]').val(uniqueNames);
       console.log(uniqueNames);
       return names;
 }
@@ -201,7 +202,7 @@ function codeLatLng(lat, lng) {
 
         var address = document.getElementById('start');
         address.value = city.long_name;
-
+        $('#startForm').val(city.long_name);
 
         } else {
           alert("No results found");
@@ -242,7 +243,34 @@ getLocation();
 
     </script>
   
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#start').on('keyup', function(){
+           $('#startForm').val($(this).val()); 
+        }); 
+        
+        $('#startForm').on('keyup', function(){
+           $('#start').val($(this).val()); 
+        }); 
+        
+        $('#endForm').on('keyup', function(){
+           $('#end').val($(this).val()); 
+        }); 
+        
+        $('#end').on('keyup', function(){
+           $('#endForm').val($(this).val()); 
+        }); 
+        
+        $('#endForm').focusout(function(){
+           calcRoute(); 
+        });
+        
+        
+        
+    });
+    
 
+</script>
 
 
     <div id="panel" style="top: 50px; left: 64%;">

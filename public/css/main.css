@@ -131,10 +131,46 @@ form[id="registerInfo"] > input[type="text"]:hover, form[id="registerInfo"] > in
 #newRouteFormContainer{
     float:left;
     width: 30%;
+    margin-left: 5%;
 }
 
 #newRoute{
     float: left;
     width: 100%;
     
+}
+
+#newRoute > label{
+    margin-top: 20px;
+}
+
+#newRoute .errors li:not(:first-child){
+    display: none;
+}
+
+#newRoute .errors li:first-child{
+    color:#C43F40;
+    display:inline-block;
+    float:left;
+    font-weight:normal;
+    margin-left:-10px;
+    margin-bottom: -20px;
+    margin-top: 2px;
+    font-size: 0.8em;
+}
+
+form[id="newRoute"] > input[type="text"]:focus, form[id="newRoute"] > input[type="password"]:focus{
+    cursor: default !important;
+    background-image: url('../images/app/creion_rosu_mare.png') !important;
+    background-position:97.5% 50%;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+}
+
+form[id="newRoute"] > input[type="text"]:hover, form[id="newRoute"] > input[type="password"]:hover{
+    cursor: pointer !important;
+    background-image: url('../images/app/creion_gri_mare.png');
+    background-position:97.5% 50%;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
 }
