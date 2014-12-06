@@ -1,5 +1,5 @@
 <?php echo $this->doctype() ?>
-<html>
+<html style="overflow-y:scroll;">
 <head>
     <?php $fc = Zend_Controller_Front::getInstance(); ?>
     <?php $this->user = Zend_Auth::getInstance()->getIdentity(); ?>
@@ -23,6 +23,8 @@
                                   ->appendScript('application.loginFormSubmit();', 'text/javascript')
                                   ->appendScript('application.setActiveMenu();', 'text/javascript')
                                   ->prependScript('activeMenu = "'.$this->activeMenu.'"'); ?>
+
+                                    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
 </head>
     <body>
         <div id="loginArea" style="width: 60%; float: right;">
@@ -51,23 +53,23 @@
             } ?>
         </div>
         <ul class="nav nav-tabs">
-            <li role="presentation" class="active"><a href="/main/home">Home</a></li>
-            <li role="presentation" ><a href="/main/active">Active Routes</a></li>
+            <li role="presentation" class="active" ><a href="/main/home" style="font-size: 25px !important; background-color: transparent;  border: none;">MyWay</a></li>
+            <li role="presentation" ><a href="/main/active" style="margin-top: 15px;">Active Routes</a></li>
 
             <?php 
             if(isset($this->user) && $this->user->driver_flag === "1"){
             ?>
-                <li role="presentation"><a href="/main/new">New Route</a></li>
+                <li role="presentation"><a href="/main/new" style="margin-top: 15px;">New Route</a></li>
             <?php } else { ?>
-                <li role="presentation" class="disabled"><a href="#">New Route</a></li>
+                <li role="presentation" class="disabled"><a href="#" style="margin-top: 15px;">New Route</a></li>
             <?php } ?>
                 
             <?php 
             if(isset($this->user)){
             ?>
-                <li role="presentation" ><a href="/main/myroutes">My Routes</a></li>
+                <li role="presentation" ><a href="/main/myroutes" style="margin-top: 15px;">My Routes</a></li>
             <?php } else { ?>
-                <li role="presentation" class="disabled"><a href="#">My Routes</a></li>
+                <li role="presentation" class="disabled"><a href="#" style="margin-top: 15px;">My Routes</a></li>
             <?php } ?>
             
            
@@ -116,12 +118,22 @@ select:hover{
 border-color: #b94a48 !important;
 box-shadow: none !important;
 }
+#password:hover{
+border-color:#d9534f;
+}
+#email:hover{
+border-color:#d9534f;
+}
+
 #password{
+  
+    border: 1px solid #ccc;
     border-radius : 5px !important;
     box-shadow: none !important;
     outline: none;
 }
 #email{
+    border: 1px solid #ccc;
     border-radius : 5px !important;
     box-shadow: none !important;
     outline: none;
@@ -148,6 +160,13 @@ background: linear-gradient(to right, #dadada 0%,#ffffff 20%,#ffffff 80%,#dadada
 .jumbotron{
     background-color: white !important;
     box-shadow: 10px 10px 65px black;
+}
+
+#loginArea{
+    margin-top: 10px  !important;
+}
+img{
+    border-radius: 20px;
 }
 
 </style>

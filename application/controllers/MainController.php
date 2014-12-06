@@ -57,7 +57,7 @@ class MainController extends Zend_Controller_Action
             if(strlen($this->_request->getPost('date')) > 0){
                 $originalDate = $this->_request->getPost('date');
                 $newDate = date("Y-m-d", strtotime($originalDate));
-                $query->where($routes->getTableName().".added LIKE ?", $newDate."%");
+                $query->where($routes->getTableName().".added LIKE ?", "%".$newDate."%");
             }
             
             $results = $db->fetchAll($query);
